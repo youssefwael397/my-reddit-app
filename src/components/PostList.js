@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from '../store/slices/postSlice';
+import { fetchPosts, resetPosts } from '../store/slices/postSlice';
 import PostCard from './PostCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -11,6 +11,7 @@ const PostList = () => {
 
   useEffect(() => {
     if (selectedCategory) {
+      dispatch(resetPosts());
       dispatch(fetchPosts({ category: selectedCategory }));
     }
   }, [selectedCategory, dispatch]);
@@ -23,10 +24,10 @@ const PostList = () => {
 
   return (
     <InfiniteScroll
-      dataLength={posts.length} // This is important field to render the next data
+      dataLength={posts.length}
       next={fetchMoreData}
       hasMore={after !== null}
-      loader={<h4 className='text-center'>Loading more posts...</h4>}
+      loader={<h4>Loading more posts...</h4>}
       endMessage={<p className="end-message">That's All Set!</p>}
     >
       {posts.map((post) => (
